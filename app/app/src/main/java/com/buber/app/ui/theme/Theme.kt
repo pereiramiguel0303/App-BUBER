@@ -9,20 +9,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+// Paleta escura inspirada no Uber. Os nomes foram mantidos para o resto do app continuar compilando:
+//   Gray100 = cartões/superfícies elevadas, Gray300 = bordas, Gray600 = texto secundário.
 val Black = Color(0xFF000000)
 val White = Color(0xFFFFFFFF)
-val Gray100 = Color(0xFFF3F3F3)
-val Gray300 = Color(0xFFD9D9D9)
-val Gray600 = Color(0xFF6B6B6B)
-val Accent = Color(0xFF276EF1)
+val SurfaceDark = Color(0xFF121212)
+val Gray100 = Color(0xFF1E1E1E)
+val Gray300 = Color(0xFF3A3A3A)
+val Gray600 = Color(0xFFA6A6A6)
+val Accent = Color(0xFF3B82F6)
 
-private val Scheme = lightColorScheme(
-    primary = Black, onPrimary = White,
-    secondary = Gray100, onSecondary = Black,
-    background = White, onBackground = Black,
-    surface = White, onSurface = Black,
+private val Scheme = darkColorScheme(
+    primary = White, onPrimary = Black,
+    secondary = Gray100, onSecondary = White,
+    secondaryContainer = Gray100, onSecondaryContainer = White,
+    background = Black, onBackground = White,
+    surface = SurfaceDark, onSurface = White,
     surfaceVariant = Gray100, onSurfaceVariant = Gray600,
-    outline = Gray300, tertiary = Accent,
+    surfaceContainer = SurfaceDark, surfaceContainerHigh = Gray100,
+    outline = Gray300, outlineVariant = Gray300,
+    tertiary = Accent,
+    error = Color(0xFFFF6B6B), onError = Black,
 )
 
 private val Type = Typography(

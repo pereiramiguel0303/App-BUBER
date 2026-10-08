@@ -13,8 +13,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.buber.app.ui.auth.SessionViewModel
 import com.buber.app.ui.screens.*
-import com.buber.app.ui.theme.Gray100
+import com.buber.app.ui.theme.Gray300
+import com.buber.app.ui.theme.Gray600
+import com.buber.app.ui.theme.White
 
 private enum class Tab(val route: String, val label: String, val icon: ImageVector) {
     Map("mapa", "Mapa", Icons.Default.Map),
@@ -24,10 +27,11 @@ private enum class Tab(val route: String, val label: String, val icon: ImageVect
 }
 
 @Composable
-fun BuberNavHost() {
+fun BuberNavHost(session: SessionViewModel) {
     val nav = rememberNavController()
     val current by nav.currentBackStackEntryAsState()
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                 Tab.entries.forEach { tab ->
@@ -40,9 +44,13 @@ fun BuberNavHost() {
                                 restoreState = true
                             }
                         },
-                        icon = { androidx.compose.material3.Icon(tab.icon, tab.label) },
+                        icon = { Icon(tab.icon, tab.label) },
                         label = { Text(tab.label) },
-                        colors = NavigationBarItemDefaults.colors(indicatorColor = Gray100),
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = White, selectedTextColor = White,
+                            unselectedIconColor = Gray600, unselectedTextColor = Gray600,
+                            indicatorColor = Gray300,
+                        ),
                     )
                 }
             }
@@ -52,7 +60,7 @@ fun BuberNavHost() {
             composable(Tab.Map.route) { MapScreen() }
             composable(Tab.Lines.route) { LinesScreen() }
             composable(Tab.Favorites.route) { FavoritesScreen() }
-            composable(Tab.Profile.route) { ProfileScreen() }
+            composable(Tab.Profile.route) { ProfileScreen(session) }
         }
     }
 }

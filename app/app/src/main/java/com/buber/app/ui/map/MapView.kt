@@ -18,23 +18,30 @@ import org.maplibre.android.maps.Style
 val SAO_LEOPOLDO = LatLng(-29.7604, -51.1470)
 
 /**
- * Estilo raster com tiles do OpenStreetMap.
- * Para produção, troque por um provedor próprio (MapTiler, Stadia, Protomaps...),
- * pois o servidor público do OSM não é para tráfego de app em escala.
+ * Estilo raster escuro (CARTO "Dark Matter", dados do OpenStreetMap).
+ * Para produção, troque por um provedor próprio (MapTiler, Stadia, Protomaps...) ou
+ * confira os termos de uso da CARTO — o servidor público não é para tráfego em escala.
  */
-private const val OSM_STYLE = """
+private const val DARK_STYLE = """
 {
   "version": 8,
   "sources": {
-    "osm": {
+    "base": {
       "type": "raster",
-      "tiles": ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+      "tiles": [
+        "https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
+        "https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png",
+        "https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+      ],
       "tileSize": 256,
       "maxzoom": 19,
-      "attribution": "© OpenStreetMap contributors"
+      "attribution": "© OpenStreetMap contributors © CARTO"
     }
   },
-  "layers": [{ "id": "osm", "type": "raster", "source": "osm" }]
+  "layers": [
+    { "id": "bg", "type": "background", "paint": { "background-color": "#0b0b0b" } },
+    { "id": "base", "type": "raster", "source": "base" }
+  ]
 }
 """
 
@@ -77,7 +84,7 @@ fun BuberMap(
         factory = {
             mapView.apply {
                 getMapAsync { map ->
-                    map.setStyle(Style.Builder().fromJson(OSM_STYLE)) { onMapReady(map) }
+                    map.setStyle(Style.Builder().fromJson(DARK_STYLE)) { onMapReady(map) }
                     map.cameraPosition = CameraPosition.Builder()
                         .target(SAO_LEOPOLDO).zoom(13.0).build()
                     map.uiSettings.isRotateGesturesEnabled = false
